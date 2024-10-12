@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json({ limit: "1kb" }));
 app.use(cors());
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5003;
 
 // Set up mongoose
 mongoose

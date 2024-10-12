@@ -76,6 +76,28 @@ function Results() {
     }
 }
 
+function counter() {
+    let tally = []; 
+    for (let i = 0; i < billInfo.cosponsors.length; i++) {
+        if (billInfo.cosponsors[i].party === "R") {
+            tally.push(billInfo.cosponsors[i].party);
+        }
+    }
+    for (let i = 0; i < billInfo.sponsor.length; i++) {
+        if (billInfo.cosponsors[i].party === "R") {
+            tally.push(billInfo.cosponsors[i].party); 
+        }
+    }
+    let total = tally.length;
+    return total; 
+}
+
+function partyPercentage(total) {
+    return ((total / billInfo.cosponsors.length) * 100); 
+}
+
+let totalRepublicanCosponsors = counter();
+let percentage = partyPercentage(totalRepublicanCosponsors);
 
 
 const billInfo = jsonData.bill
@@ -93,6 +115,9 @@ const billAnalysor = jsonData.analysis
       <div>Bill Co-sponsors: {billInfo.cosponsors.map((cosponsor, index) =>(
         <li key={index}>{cosponsor.fullName}</li>
       ))}</div>
+
+      <div>Party Percentage</div>
+      <div>{percentage}%</div>
 
       <div>Stage: The bill is currently at {billInfo.latestStage}, since {billInfo.updateDate}</div>
 

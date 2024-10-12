@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cheerio }from "cheerio";
+import * as cheerio from 'cheerio';
 import Bill from "../models/bill.model.js";
 // import gpt from "../gpt/gpt.js";
 import embeddings from "@themaximalist/embeddings.js";
@@ -12,7 +12,7 @@ const LIMIT = 10;
 router.get("/search", async (req, res) => {
   try {
     // q: query, date: bills after x date, party: political party of sponsor, stage: bill status
-    const { q, date, party, stage } = req.query;
+    const { q, date_after, date_before, party, stage } = req.query;
     if (!q) {
       return res.status(400).json({ err: "Query not provided." });
     }
@@ -33,14 +33,20 @@ router.get("/search", async (req, res) => {
 
     const match = {};
 
-    if (date) {
-      // Process date
-      const parsedDate = Date.parse(date);
-      if (parsedDate) {
-        // If we have a valid date
-        match.updateDate = { '$gte': parsedDate };
+    if (date_after) {
+      const parsedDateAfter = Date.parse(date_after);
+      if (parsedDateAfter) {
+        match.updateDate = { ...match.updateDate, '$gte': parsedDateAfter };
       }
     }
+    
+    if (date_before) {
+      const parsedDateBefore = Date.parse(date_before);
+      if (parsedDateBefore) {
+        match.updateDate = { ...match.updateDate, '$lte': parsedDateBefore };
+      }
+    }
+    
     
     if (party) {
       match['sponsor.party'] = party;
@@ -51,9 +57,9 @@ router.get("/search", async (req, res) => {
     }
 
     if (Object.keys(match).length > 0) {
-      agg.unshift({
+      agg.push({
         '$match': match
-      })
+      });
     }
 
     const result = await Bill.aggregate(agg);
@@ -61,7 +67,7 @@ router.get("/search", async (req, res) => {
       delete result[i].title_vector;
     }
 
-    return res.json(cleanResult);
+    return res.json(result);
   } catch (err) {
     return res.status(500).json({ err: err.message });
   }
@@ -93,10 +99,12 @@ router.get("/bill/:id", async (req, res) => {
     const $ = cheerio.load(await response.text());
     const text = $('pre').text();
 
-    // Get GPT Summary
-    const summary = gpt.getSummary(text);
+    // Get GPT Analysis
+    const analysis = gpt.getAnalysis(text);
 
-    return res.json(summary);
+    delete bill.title_vector;
+
+    return res.json({bill, analysis});
   } catch (err) {
     return res.status(500).json({ err: err.message });
   }

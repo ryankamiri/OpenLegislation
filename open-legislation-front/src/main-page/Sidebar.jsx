@@ -31,7 +31,7 @@ function Sidebar() {
     ]
 
     return (
-        <div>
+        <div className='flex flex-col bg-gray-600'>
             <h2>Date</h2>
             <div>
                 <h3>Start</h3>

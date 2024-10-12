@@ -3,7 +3,7 @@ import './App.css'
 
 function Footer() {
     return (
-        <footer>
+        <footer className="">
             You have reached the bottom!
         </footer>
     )

@@ -2,11 +2,13 @@ import { FaBookOpen } from "react-icons/fa";
 import App from "../App";
 import MainPage from "../main-page/MainPage";
 
-
 export default function LandingPage(){
 
     return(
         <div>
+            
+            <h1>Open Legislation<FaBookOpen /></h1>
+            <FaBookOpen />
             <h2>How it works</h2>
             <ol>
                 <li>Search for a bill in the Congress</li>
@@ -18,7 +20,6 @@ export default function LandingPage(){
 
             
             <button onClick={MainPage}>Get started!</button>
-
 
         </div>
     )

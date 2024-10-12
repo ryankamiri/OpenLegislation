@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 import './App.css'
 import SearchBar from './SearchBar';
 import { FaBookOpen } from "react-icons/fa";
 
 function Header() {
     return (
-        <header>
-            <h1>
-                <a href='./'><FaBookOpen /> OpenLegislation</a>
-                <SearchBar />
-            </h1>
-        </header>
+        <div
+    className={`w-full text-center flex justify-between px-4 h-24 md:h-16 items-center`}>
+        <div className="flex justify-between w-full items-center">
+            <div className="items-center"></div>
+                <a href='./' className="hover:text-gray-300">OpenLegislation</a>
+                <div className='m-2 p-6'>
+                    <SearchBar />
+                </div>
+            </div>
+        </div>
     )
 }
 

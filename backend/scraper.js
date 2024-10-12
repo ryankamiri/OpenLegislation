@@ -20,9 +20,14 @@ const link2 = `&limit=20&format=json&api_key=${GOV_API}`;
 
 const scrapeGov = async () => {
   let count = 0;
-  for (let i = 0; i < 10; i++) {
+  const set = new Set();
+  for (let i = 0; i < 8; i++) {
     const response = await fetch(`${link1}${i * 20}${link2}`);
     const data = await response.json();
+    if(data.error) {
+      console.error("Error fetching data:", data.error);
+      return;
+    }
     for (const bill of data.bills) {
       if (bill.latestAction.text.includes("Became Public Law")) {
         continue;
@@ -31,9 +36,8 @@ const scrapeGov = async () => {
         const billData = await fetch(`${bill.url}&api_key=${GOV_API}`);
         const billDataJSON = await billData.json();
         // const actionsUrl = `${billDataJSON.bill.actions.url}&api_key=${GOV_API}`;
-        
         let cosponsorsDataJSON = {cosponsors: []};
-        if(billDataJSON.bill.cosponsors != null) {  
+        if(billDataJSON.bill.cosponsors && billDataJSON.bill.cosponsors.url) {  
           const cosponsorsUrl = `${billDataJSON.bill.cosponsors.url}&api_key=${GOV_API}`;
           const cosponsorsData = await fetch(cosponsorsUrl);
           cosponsorsDataJSON = await cosponsorsData.json();
@@ -76,12 +80,14 @@ const scrapeGov = async () => {
           textUrl: fullTextURL,
         });
         await billObj.save();
-        console.log(count++, "Adding bill to database:", bill.title.substring(0, 50));
+        set.add(billObj.latestStage);
+        console.log(count++, i, "Adding bill to database:", bill.title.substring(0, 50));
       } catch (err) {
-        console.error(count++, "Error adding bill to database:", err, "\n\n");
+        console.error(count++, i, "Error adding bill to database:", err, "\n\n");
       }
     }
   }
+  console.log("Unique stages:", set);
 };
 
 await scrapeGov().then(() => console.log("Scraping complete"));

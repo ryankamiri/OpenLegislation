@@ -3,6 +3,7 @@ import './App.css'
 import Header from './Header'
 import Footer from './Footer'
 import MainPage from './main-page/MainPage'
+import LandingPage from './landing-page/LandingPage'
 
 const query = ''
 

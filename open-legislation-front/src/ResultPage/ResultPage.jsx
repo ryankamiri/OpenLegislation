@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export default function ResultPage() {
-    const [bills, setBills] = useState([]);
+  const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,7 +18,6 @@ export default function ResultPage() {
         setLoading(false);
       });
   }, []);
-
 
   if (loading) {
     return <p>Loading...</p>;

@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "llamaindex": "^0.6.20",
     "mongoose": "^8.7.1",
     "nodemon": "^3.1.7",
     "openai": "^4.67.3"

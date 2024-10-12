@@ -22,4 +22,6 @@ mongoose
 // Set up routes
 app.use("/api/legislation", legislationRoutes);
 
-app.listen(PORT, () => console.log(`The server is on: https://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`The server is on: https://localhost:${PORT}`),
+);

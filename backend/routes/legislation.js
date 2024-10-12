@@ -1,8 +1,9 @@
 import { Router } from "express";
-import * as cheerio from 'cheerio';
+import * as cheerio from "cheerio";
 import Bill from "../models/bill.model.js";
-import { getAnalysis } from "../gpt/gpt.js";
-import embeddings from "@themaximalist/embeddings.js";
+// import { getAnalysis } from "../gpt/gpt.js";
+// import embeddings from "@themaximalist/embeddings.js";
+import { embeddings, getAnalysis } from "../utils.js";
 
 const router = Router();
 
@@ -22,43 +23,49 @@ router.get("/search", async (req, res) => {
 
     const agg = [
       {
-        '$vectorSearch': {
-          'index': 'vector_index',
-          'path': 'title_vector',
-          'queryVector': embeddingQ,
-          "numCandidates": NUM_CANDIDATES,
-          "limit": LIMIT
-        }
-    }];
+        $vectorSearch: {
+          index: "vector_index",
+          path: "title_vector",
+          queryVector: embeddingQ,
+          numCandidates: NUM_CANDIDATES,
+          limit: LIMIT,
+        },
+      },
+    ];
 
     const match = {};
 
     if (date_after) {
-      const parsedDateAfter = Date.parse(date_after + 'T00:00:00.000Z');
+      const parsedDateAfter = Date.parse(date_after + "T00:00:00.000Z");
       if (parsedDateAfter) {
-        match.updateDate = { ...match.updateDate, '$gte': new Date(parsedDateAfter) };
+        match.updateDate = {
+          ...match.updateDate,
+          $gte: new Date(parsedDateAfter),
+        };
       }
     }
-    
+
     if (date_before) {
-      const parsedDateBefore = Date.parse(date_before + 'T00:00:00.000Z');
+      const parsedDateBefore = Date.parse(date_before + "T00:00:00.000Z");
       if (parsedDateBefore) {
-        match.updateDate = { ...match.updateDate, '$lte': new Date(parsedDateBefore) };
+        match.updateDate = {
+          ...match.updateDate,
+          $lte: new Date(parsedDateBefore),
+        };
       }
     }
-    
-    
+
     if (party) {
-      match['sponsor.party'] = party;
+      match["sponsor.party"] = party;
     }
-    
+
     if (stage) {
       match.latestStage = stage;
     }
 
     if (Object.keys(match).length > 0) {
       agg.push({
-        '$match': match
+        $match: match,
       });
     }
 
@@ -82,22 +89,32 @@ router.get("/bill/:id", async (req, res) => {
     }
 
     // Get Bill Object
-    let bill = await Bill.findOne({billId: id});
+    let bill = await Bill.findOne({ billId: id });
     if (!bill) {
-      return res.status(400).json({ err: `Bill with id '${id}' does not exist.`});
-    }3
+      return res
+        .status(400)
+        .json({ err: `Bill with id '${id}' does not exist.` });
+    }
+    3;
 
-    const response = await fetch(`${bill.textUrl}?api_key=${process.env.GOV_API}`, {
-      method: "GET"
-    });
+    const response = await fetch(
+      `${bill.textUrl}?api_key=${process.env.GOV_API}`,
+      {
+        method: "GET",
+      },
+    );
 
     if (!response.ok) {
-      return res.status(500).json({ err: `Gov API returned an ${response.status} error: ${await response.text()}` });
+      return res
+        .status(500)
+        .json({
+          err: `Gov API returned an ${response.status} error: ${await response.text()}`,
+        });
     }
 
     // Get text of bill from gov
     const $ = cheerio.load(await response.text());
-    const text = $('pre').text();
+    const text = $("pre").text();
 
     // Get GPT Analysis
     const analysis = await getAnalysis(text);
@@ -106,7 +123,7 @@ router.get("/bill/:id", async (req, res) => {
 
     delete bill.title_vector;
 
-    return res.json({bill, analysis});
+    return res.json({ bill, analysis });
   } catch (err) {
     return res.status(500).json({ err: err.message });
   }

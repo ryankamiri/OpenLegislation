@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import Bill from "./models/bill.model.js";
 import dotenv from "dotenv";
-import embeddings from "@themaximalist/embeddings.js";
-
+// import embeddings from "@themaximalist/embeddings.js";
+import { embeddings } from "./utils.js";
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ const scrapeGov = async () => {
   for (let i = 0; i < 8; i++) {
     const response = await fetch(`${link1}${i * 20}${link2}`);
     const data = await response.json();
-    if(data.error) {
+    if (data.error) {
       console.error("Error fetching data:", data.error);
       return;
     }
@@ -34,45 +34,45 @@ const scrapeGov = async () => {
       try {
         const billData = await fetch(`${bill.url}&api_key=${GOV_API}`);
         const billDataJSON = await billData.json();
-        
+
         const actionsUrl = `${billDataJSON.bill.actions.url}&api_key=${GOV_API}`;
         const actionsData = await fetch(actionsUrl);
         const actionsDataJSON = await actionsData.json();
 
-        let cosponsorsDataJSON = {cosponsors: []};
-        if(billDataJSON.bill.cosponsors && billDataJSON.bill.cosponsors.url) {  
+        let cosponsorsDataJSON = { cosponsors: [] };
+        if (billDataJSON.bill.cosponsors && billDataJSON.bill.cosponsors.url) {
           const cosponsorsUrl = `${billDataJSON.bill.cosponsors.url}&api_key=${GOV_API}`;
           const cosponsorsData = await fetch(cosponsorsUrl);
           cosponsorsDataJSON = await cosponsorsData.json();
         }
 
         let fullTextURL = "No URL available";
-        if(billDataJSON.bill.textVersions && billDataJSON.bill.textVersions.url) {
+        if (
+          billDataJSON.bill.textVersions &&
+          billDataJSON.bill.textVersions.url
+        ) {
           const textUrl = `${billDataJSON.bill.textVersions.url}&api_key=${GOV_API}`;
           const textData = await fetch(textUrl);
           const textDataJSON = await textData.json();
-          
+
           fullTextURL = textDataJSON.textVersions[0].formats
             .filter((format) => format.type == "Formatted Text")
-            .map((format) => format.url)[0];  
+            .map((format) => format.url)[0];
         }
-        if(fullTextURL === "No URL available") {
+        if (fullTextURL === "No URL available") {
           throw new Error("No URL available");
         }
 
         const embedding = await embeddings(bill.title);
 
         let stage = bill.latestAction.text;
-        if(stage.toLowerCase().includes("committee")) {
+        if (stage.toLowerCase().includes("committee")) {
           stage = "House";
-        }
-        else if(stage.toLowerCase().includes("senat")) {
+        } else if (stage.toLowerCase().includes("senat")) {
           stage = "Senate";
-        }
-        else if(stage.toLowerCase().includes("desk") ) {
+        } else if (stage.toLowerCase().includes("desk")) {
           stage = "President";
-        }
-        else if(actionsDataJSON.actions[0].type === "IntroReferral") {
+        } else if (actionsDataJSON.actions[0].type === "IntroReferral") {
           stage = "Introduced";
         }
 
@@ -93,9 +93,13 @@ const scrapeGov = async () => {
           billUrl: bill.url,
           textUrl: fullTextURL,
         });
-        await billObj.save();
-        set.add(billObj.latestStage);
-        console.log(count++, i, "Adding bill to database:", bill.title.substring(0, 50));
+        // await billObj.save();
+        console.log(
+          count++,
+          i,
+          "Adding bill to database:",
+          bill.title.substring(0, 50),
+        );
       } catch (err) {
         console.error(count++, i, "Error adding bill to database:", err);
       }
@@ -104,7 +108,6 @@ const scrapeGov = async () => {
 };
 
 await scrapeGov().then(() => console.log("Scraping complete"));
-
 await mongoose.connection
   .close()
   .then(() => console.log("MongoDB connection closed"));

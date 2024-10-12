@@ -20,7 +20,6 @@ const link2 = `&limit=20&format=json&api_key=${GOV_API}`;
 
 const scrapeGov = async () => {
   let count = 0;
-  const set = new Set();
   for (let i = 0; i < 8; i++) {
     const response = await fetch(`${link1}${i * 20}${link2}`);
     const data = await response.json();
@@ -35,7 +34,11 @@ const scrapeGov = async () => {
       try {
         const billData = await fetch(`${bill.url}&api_key=${GOV_API}`);
         const billDataJSON = await billData.json();
-        // const actionsUrl = `${billDataJSON.bill.actions.url}&api_key=${GOV_API}`;
+        
+        const actionsUrl = `${billDataJSON.bill.actions.url}&api_key=${GOV_API}`;
+        const actionsData = await fetch(actionsUrl);
+        const actionsDataJSON = await actionsData.json();
+
         let cosponsorsDataJSON = {cosponsors: []};
         if(billDataJSON.bill.cosponsors && billDataJSON.bill.cosponsors.url) {  
           const cosponsorsUrl = `${billDataJSON.bill.cosponsors.url}&api_key=${GOV_API}`;
@@ -44,23 +47,34 @@ const scrapeGov = async () => {
         }
 
         let fullTextURL = "No URL available";
-        if(billDataJSON.bill.textVersions && !billDataJSON.bill.textVersions.url) {
+        if(billDataJSON.bill.textVersions && billDataJSON.bill.textVersions.url) {
           const textUrl = `${billDataJSON.bill.textVersions.url}&api_key=${GOV_API}`;
           const textData = await fetch(textUrl);
           const textDataJSON = await textData.json();
-
+          
           fullTextURL = textDataJSON.textVersions[0].formats
             .filter((format) => format.type == "Formatted Text")
             .map((format) => format.url)[0];  
         }
+        if(fullTextURL === "No URL available") {
+          throw new Error("No URL available");
+        }
 
         const embedding = await embeddings(bill.title);
-        // const embedding = await createEmbedding(bill.title);
-        // if(embedding.error) {
-        //   console.error("Error creating embedding:", embedding.error.code, ":", bill.title);
-        //   return;
-        // }
-        // const embedding = [0];
+
+        let stage = bill.latestAction.text;
+        if(stage.toLowerCase().includes("committee")) {
+          stage = "House";
+        }
+        else if(stage.toLowerCase().includes("senat")) {
+          stage = "Senate";
+        }
+        else if(stage.toLowerCase().includes("desk") ) {
+          stage = "President";
+        }
+        else if(actionsDataJSON.actions[0].type === "IntroReferral") {
+          stage = "Introduced";
+        }
 
         const billObj = new Bill({
           billId: bill.number,
@@ -73,7 +87,7 @@ const scrapeGov = async () => {
           title_vector: embedding,
           originChamber: bill.originChamber,
           updateDate: bill.updateDate,
-          latestStage: bill.latestAction.text,
+          latestStage: stage,
           sponsor: billDataJSON.bill.sponsors[0],
           cosponsors: cosponsorsDataJSON.cosponsors,
           billUrl: bill.url,
@@ -83,11 +97,10 @@ const scrapeGov = async () => {
         set.add(billObj.latestStage);
         console.log(count++, i, "Adding bill to database:", bill.title.substring(0, 50));
       } catch (err) {
-        console.error(count++, i, "Error adding bill to database:", err, "\n\n");
+        console.error(count++, i, "Error adding bill to database:", err);
       }
     }
   }
-  console.log("Unique stages:", set);
 };
 
 await scrapeGov().then(() => console.log("Scraping complete"));

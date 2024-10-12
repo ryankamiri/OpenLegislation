@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import Bill from "./models/bill.model.js";
 import dotenv from "dotenv";
+import { createEmbedding } from "./gpt/gpt.js";
 
 dotenv.config();
 
-const API_URL = process.env.GOV_URL;
 const GOV_API = process.env.GOV_API;
 
 await mongoose
@@ -29,13 +29,11 @@ const scrapeGov = async () => {
         const billData = await fetch(`${bill.url}&api_key=${GOV_API}`);
         const billDataJSON = await billData.json();
         // const actionsUrl = `${billDataJSON.bill.actions.url}&api_key=${GOV_API}`;
-        // const actionsData = await fetch(actionsUrl);
-        // const actionsDataJSON = await actionsData.json();
 
         const cosponsorsUrl = `${billDataJSON.bill.cosponsors.url}&api_key=${GOV_API}`;
         const cosponsorsData = await fetch(cosponsorsUrl);
         const cosponsorsDataJSON = await cosponsorsData.json();
-        
+
         const textUrl = `${billDataJSON.bill.textVersions.url}&api_key=${GOV_API}`;
         const textData = await fetch(textUrl);
         const textDataJSON = await textData.json();
@@ -43,7 +41,7 @@ const scrapeGov = async () => {
         const fullTextURL = textDataJSON.textVersions[0].formats
           .filter((format) => format.type == "Formatted Text")
           .map((format) => format.url)[0];
-        
+
         const embedding = await createEmbedding(bill.title);
 
         const billObj = new Bill({
@@ -58,7 +56,7 @@ const scrapeGov = async () => {
           originChamber: bill.originChamber,
           updateDate: bill.updateDate,
           latestStage: bill.latestAction.text,
-          sponsor: billDataJSON.bill.sponsors,
+          sponsor: billDataJSON.bill.sponsors[0],
           cosponsors: cosponsorsDataJSON.cosponsors,
           billUrl: bill.url,
           textUrl: fullTextURL,
@@ -66,33 +64,13 @@ const scrapeGov = async () => {
         billObj.save();
         console.log("Added bill to database");
       } catch (err) {
-        console.error("Skipped bill");
+        console.error("Error adding bill to database:");
       }
     }
   }
 };
 
-const createEmbedding = async (input) => {
-  const response = await fetch('https://api.openai.com/v1/embeddings', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.GPT_API}`
-    },
-    body: JSON.stringify({
-      model: 'text-embedding-ada-002',
-      input
-    })
-  });
-  const data = await response.json();
-  return data.data[0].embedding;
-}
-
-await scrapeGov();
-
-// const response = await fetch(`https://api.congress.gov/v3/bill/118/s?offset=40&limit=20&format=json&api_key=${GOV_API}`);
-// const data = await response.json();
-// console.log(JSON.stringify(data));
+await scrapeGov().then(() => console.log("Scraping complete"));
 
 await mongoose.connection
   .close()

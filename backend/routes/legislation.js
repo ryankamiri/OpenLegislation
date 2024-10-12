@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { cheerio }from "cheerio";
+import { cheerio } from "cheerio";
 import Bill from "../models/bill.model.js";
-import gpt from "../gpt/gpt.js";
+import { getSummary } from "../gpt/gpt.js";
 
 const router = Router();
 
@@ -75,25 +75,30 @@ router.get("/bill/:id", async (req, res) => {
     }
 
     // Get Bill Object
-    const bill = await Bill.find({billId: id});
+    const bill = await Bill.find({ billId: id });
     if (!bill) {
-      return res.status(400).json({ err: `Bill with id '${id}' does not exist.`});
+      return res
+        .status(400)
+        .json({ err: `Bill with id '${id}' does not exist.` });
     }
 
-    const response = await fetch(`${bill.textUrl}?api_key=${process.env.GOV_API}`, {
-      method: "GET"
-    });
-
+    const response = await fetch(
+      `${bill.textUrl}?api_key=${process.env.GOV_API}`,
+    );
     if (!response.ok) {
-      return res.status(500).json({ err: `Gov API returned an ${response.status} error: ${await response.text()}` });
+      return res
+        .status(500)
+        .json({
+          err: `Gov API returned an ${response.status} error: ${await response.text()}`,
+        });
     }
 
     // Get text of bill from gov
     const $ = cheerio.load(await response.text());
-    const text = $('pre').text();
+    const text = $("pre").text();
 
     // Get GPT Summary
-    const summary = gpt.getSummary(text);
+    const summary = getSummary(text);
 
     return res.json(summary);
   } catch (err) {

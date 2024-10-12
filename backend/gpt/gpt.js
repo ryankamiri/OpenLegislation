@@ -11,7 +11,7 @@ const JSON_FORMAT =
   '{"summary": "", "potentialImpact": "", "impactedGroups": ""}';
 const MAX_TEXT_LENGTH = 10000;
 
-const getSummary = async (text) => {
+export const getSummary = async (text) => {
   // Validate text
   text = text.trim().replace(/[^a-zA-Z0-9]/g, "");
 
@@ -39,4 +39,18 @@ const getSummary = async (text) => {
   throw new Error("Refusal from ChatGPT (illegal response)");
 };
 
-export default { getSummary };
+export const createEmbedding = async (input) => {
+  const response = await fetch("https://api.openai.com/v1/embeddings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.GPT_API}`,
+    },
+    body: JSON.stringify({
+      model: "text-embedding-ada-002",
+      input,
+    }),
+  });
+  const data = await response.json();
+  return data.data[0].embedding;
+};

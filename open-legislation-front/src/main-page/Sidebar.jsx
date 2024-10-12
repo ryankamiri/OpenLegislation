@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Dropdown from './Dropdown';
+import NavButton from './NavButton';
 
 function Sidebar() {
     const [minDate, setMinDate] = useState('');
@@ -31,30 +32,34 @@ function Sidebar() {
     ]
 
     return (
-        <div className='flex flex-col bg-gray-600'>
-            <h2>Date</h2>
-            <div>
-                <h3>Start</h3>
+        <div className='flex flex-col bg-gray-700 p-4 space-y-2 text-center'>
+            <h2 className="text-white">Date</h2>
+            <div className='space-y-2'>
+                <h3 className="text-white">Start</h3>
                 <input
+                    className='rounded p-2 text-center'
                     type="text"
                     onChange={(e) => setMinDate(e.target.value)} 
                     placeholder="Enter start date"
                 />
             </div>
-            <div>
-                <h3>End</h3>
+            <div className='space-y-2'>
+                <h3 className="text-white">End</h3>
                 <input
+                    className='rounded p-2 text-center'
                     type="text"
                     onChange={(e) => setMaxDate(e.target.value)} 
                     placeholder="Enter end date"
                 />
             </div>
 
-            <h2>Party</h2>
+            <h2 className="text-white">Party</h2>
             <Dropdown items={parties} onChange={handleDropdownChange(setParty)} />
 
-            <h2>Status</h2>
+            <h2 className="text-white">Status</h2>
             <Dropdown items={statuses} onChange={handleDropdownChange(setStatus)} />
+
+            <NavButton destination='/results' text='Apply'></NavButton>
         </div>
     )
 }

@@ -1,8 +1,10 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import './App.css'
 import Header from './Header'
 import Footer from './Footer'
 import MainPage from './main-page/MainPage'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from './LandingPage/LandingPage'
 
 const query = ''
 
@@ -12,12 +14,14 @@ function App() {
   return (
     <div>
       <Header />
-      <Router>
-          <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="results" element={<MainPage query={query} />} />
-          </Routes>
-      </Router>
+      <BrowserRouter>
+        <Routes>
+            <Route>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="results" element={<MainPage query={query} />} />
+            </Route>
+        </Routes>
+      </BrowserRouter>
       <Footer />
     </div>
   )

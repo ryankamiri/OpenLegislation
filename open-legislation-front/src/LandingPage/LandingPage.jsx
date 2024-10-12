@@ -1,12 +1,11 @@
 import { FaBookOpen } from "react-icons/fa";
 import App from "../App";
-
-
 export default function LandingPage(){
 
     return(
         <div>
-            <h1>Open Legislature<FaBookOpen /></h1>
+            
+            <h1>Open Legislation<FaBookOpen /></h1>
             <FaBookOpen />
 
 
@@ -21,7 +20,6 @@ export default function LandingPage(){
 
             
             <button onClick={ App }>Get started!</button>
-
 
         </div>
     )

@@ -11,6 +11,7 @@ function SearchBar() {
 
     return (
         <div>
+            <div>
             <input 
                 id='search-query'
                 type="text" 
@@ -18,10 +19,11 @@ function SearchBar() {
                 value={query}
                 onChange={handleQueryChange}
             />
-            <button
+            <button className="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                 id='search-button'
                 onClick={() => q = query}
             >Search</button>
+            </div>
         </div>
     )
 }

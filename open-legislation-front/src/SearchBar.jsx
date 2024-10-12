@@ -1,29 +1,33 @@
 import React, { useState } from "react";
+import { Button } from "flowbite-react";
 
 let q = ''
 
-function SearchBar() {
+function SearchBar({ onSearch }) {
     const [query, setQuery] = useState('');
 
     const handleQueryChange = (e) => {
         setQuery(e.target.value)
+        onSearch(e.target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        onSearch(query)
     }
 
     return (
         <div>
-            <div>
-            <input 
-                id='search-query'
-                type="text" 
-                placeholder="Search..." 
-                value={query}
-                onChange={handleQueryChange}
-            />
-            <button className="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                id='search-button'
-                onClick={() => q = query}
-            >Search</button>
-            </div>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    id='search-query'
+                    type="text" 
+                    placeholder="Search..." 
+                    value={query}
+                    onChange={handleQueryChange}
+                />
+                <button type="submit">Search</button>
+            </form>
         </div>
     )
 }

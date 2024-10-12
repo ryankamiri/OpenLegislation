@@ -1,6 +1,7 @@
 // import React, { useState } from 'react'
 import './App.css'
 import SearchBar from './SearchBar';
+import { FaBookOpen } from "react-icons/fa";
 
 function Header() {
     return (

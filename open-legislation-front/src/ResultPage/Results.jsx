@@ -1,8 +1,8 @@
-// import React from "react";
+import React from "react";
 
 function Results() {
 
-  const jasonData = {
+  const jsonData = {
     "bill": {
         "latestAction": {
             "actionDate": "2024-09-27T00:00:00.000Z",
@@ -78,8 +78,8 @@ function Results() {
 
 
 
-const billInfo = jasonData.bill
-const billAnalysor = jasonData.analysis
+const billInfo = jsonData.bill
+const billAnalysor = jsonData.analysis
 
   return (
     <div>

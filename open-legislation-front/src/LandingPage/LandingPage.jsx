@@ -27,12 +27,12 @@ export default function LandingPage() {
             </ol>   
             <div>
             <button 
-                onClick={() => navigate('/results')}
+                onClick={() => navigate('/home')}
                 className="bg-red-500 text-white py-2 px-4  hover:bg-red-400 transition duration-300 rounded-tl-lg rounded-bl-lg"
                 >&nbsp;&nbsp;  Get &nbsp; 
             </button>
             <button 
-                onClick={() => navigate('/results')} 
+                onClick={() => navigate('/home')} 
                 className="bg-blue-500 text-white py-2 px-4  hover:bg-blue-400 transition duration-300 rounded-tr-lg rounded-br-lg"
             >
              Started!

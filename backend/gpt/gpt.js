@@ -9,12 +9,14 @@ const openai = new OpenAI({
 
 const JSON_FORMAT =
   '{"summary": "", "potentialImpact": "", "impactedGroups": ""}';
-const MAX_TEXT_LENGTH = 1000;
+const MAX_TEXT_LENGTH = 10000;
 
 const getSummary = async (text) => {
   // Validate text
+  text = text.trim().replace(/[^a-zA-Z0-9]/g, "");
+
   if (text.length > MAX_TEXT_LENGTH) {
-    throw new Error(`Text length is over max length (${MAX_TEXT_LENGTH})`);
+    text = text.substring(0, MAX_TEXT_LENGTH);
   }
 
   const completion = await openai.chat.completions.create({

@@ -9,6 +9,7 @@ const billSchema = new Schema(
     billId: {
       type: Number,
       required: true,
+      unique: true
     },
     title: {
       type: String,

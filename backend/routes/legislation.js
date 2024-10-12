@@ -1,6 +1,9 @@
 import { Router } from "express";
-const router = Router();
+import { cheerio }from "cheerio";
+import Bill from "../models/bill.model.js";
 import gpt from "../gpt/gpt.js";
+
+const router = Router();
 
 const searchCongress = async (q, party, status) => {
   const base = "https://www.congress.gov/search";
@@ -31,14 +34,14 @@ const searchCongress = async (q, party, status) => {
 
 router.get("/search", async (req, res) => {
   try {
-    // q: query, status: bill status
-    const { q, party, status } = req.query;
+    // q: query, date: bills after x date, party: political party of sponsor, status: bill status
+    const { q, date, party, status } = req.query;
     if (!q) {
       return res.status(400).json({ err: "Query not provided." });
     }
 
     // Make request to gov
-    searchCongress(q, party, status);
+    // searchCongress(q, party, status);
 
     return res.json({});
   } catch (err) {
@@ -54,11 +57,23 @@ router.get("/bill/:id", async (req, res) => {
       return res.status(400).json({ err: "Id is required to get bill info." });
     }
 
-    // Make request to gov
-    // https://api.congress.gov/v3/bill/118/s/951?api_key=[INSERT_KEY]
+    // Get Bill Object
+    const bill = await Bill.find({billId: id});
+    if (!bill) {
+      return res.status(400).json({ err: `Bill with id '${id}' does not exist.`});
+    }
+
+    const response = await fetch(`${bill.textUrl}?api_key=${process.env.GOV_API}`, {
+      method: "GET"
+    });
+
+    if (!response.ok) {
+      return res.status(500).json({ err: `Gov API returned an ${response.status} error: ${await response.text()}` });
+    }
 
     // Get text of bill from gov
-    const text = "";
+    const $ = cheerio.load(await response.text());
+    const text = $('pre').text();
 
     // Get GPT Summary
     const summary = gpt.getSummary(text);

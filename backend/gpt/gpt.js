@@ -52,5 +52,8 @@ export const createEmbedding = async (input) => {
     }),
   });
   const data = await response.json();
+  if(data.error) {
+    return(data);
+  }
   return data.data[0].embedding;
 };

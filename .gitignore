@@ -3,3 +3,4 @@ open-legislation-front/node_modules
 node_modules
 *env
 .vscode
+*.json

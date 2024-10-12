@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import Bill from "./models/bill.model.js";
 import dotenv from "dotenv";
 import { createEmbedding } from "./gpt/gpt.js";
+import embeddings from "@themaximalist/embeddings.js";
+
 
 dotenv.config();
 
@@ -18,7 +20,8 @@ const link1 = "https://api.congress.gov/v3/bill/118/s?offset=";
 const link2 = `&limit=20&format=json&api_key=${GOV_API}`;
 
 const scrapeGov = async () => {
-  for (let i = 0; i < 1; i++) {
+  let count = 0;
+  for (let i = 0; i < 10; i++) {
     const response = await fetch(`${link1}${i * 20}${link2}`);
     const data = await response.json();
     for (const bill of data.bills) {
@@ -29,20 +32,32 @@ const scrapeGov = async () => {
         const billData = await fetch(`${bill.url}&api_key=${GOV_API}`);
         const billDataJSON = await billData.json();
         // const actionsUrl = `${billDataJSON.bill.actions.url}&api_key=${GOV_API}`;
+        
+        let cosponsorsDataJSON = {cosponsors: []};
+        if(billDataJSON.bill.cosponsors != null) {  
+          const cosponsorsUrl = `${billDataJSON.bill.cosponsors.url}&api_key=${GOV_API}`;
+          const cosponsorsData = await fetch(cosponsorsUrl);
+          cosponsorsDataJSON = await cosponsorsData.json();
+        }
 
-        const cosponsorsUrl = `${billDataJSON.bill.cosponsors.url}&api_key=${GOV_API}`;
-        const cosponsorsData = await fetch(cosponsorsUrl);
-        const cosponsorsDataJSON = await cosponsorsData.json();
+        let fullTextURL = "No URL available";
+        if(billDataJSON.bill.textVersions && !billDataJSON.bill.textVersions.url) {
+          const textUrl = `${billDataJSON.bill.textVersions.url}&api_key=${GOV_API}`;
+          const textData = await fetch(textUrl);
+          const textDataJSON = await textData.json();
 
-        const textUrl = `${billDataJSON.bill.textVersions.url}&api_key=${GOV_API}`;
-        const textData = await fetch(textUrl);
-        const textDataJSON = await textData.json();
+          fullTextURL = textDataJSON.textVersions[0].formats
+            .filter((format) => format.type == "Formatted Text")
+            .map((format) => format.url)[0];  
+        }
 
-        const fullTextURL = textDataJSON.textVersions[0].formats
-          .filter((format) => format.type == "Formatted Text")
-          .map((format) => format.url)[0];
-
-        const embedding = await createEmbedding(bill.title);
+        const embedding = await embeddings(bill.title);
+        // const embedding = await createEmbedding(bill.title);
+        // if(embedding.error) {
+        //   console.error("Error creating embedding:", embedding.error.code, ":", bill.title);
+        //   return;
+        // }
+        // const embedding = [0];
 
         const billObj = new Bill({
           billId: bill.number,
@@ -61,10 +76,10 @@ const scrapeGov = async () => {
           billUrl: bill.url,
           textUrl: fullTextURL,
         });
-        billObj.save();
-        console.log("Added bill to database");
+        await billObj.save();
+        console.log(count++, "Adding bill to database:", bill.title.substring(0, 50));
       } catch (err) {
-        console.error("Error adding bill to database:");
+        console.error(count++, "Error adding bill to database:", err, "\n\n");
       }
     }
   }

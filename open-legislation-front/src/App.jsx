@@ -1,4 +1,4 @@
-// import { useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 import Header from './Header'
 import Footer from './Footer'
@@ -7,18 +7,19 @@ import LandingPage from './LandingPage/LandingPage'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
-  // const [count, setCount] = useState(0)
 
   return (
     <div>
-      <Header />
       <Router>
+        <div className='flex h-full bg-gray-100'>
+          <Header />
           <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/results" element={<MainPage />} />
           </Routes>
+          <Footer />
+        </div>
       </Router>
-      <Footer />
     </div>
   )
 }

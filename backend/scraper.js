@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import Bill from "./models/bill.model.js";
 import dotenv from "dotenv";
-import { createEmbedding } from "./gpt/gpt.js";
 import embeddings from "@themaximalist/embeddings.js";
 
 

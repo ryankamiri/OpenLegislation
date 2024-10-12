@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { cheerio }from "cheerio";
 import Bill from "../models/bill.model.js";
-import gpt from "../gpt/gpt.js";
+// import gpt from "../gpt/gpt.js";
+import embeddings from "@themaximalist/embeddings.js";
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.get("/search", async (req, res) => {
     }
 
     // Make vector search
-    const embeddingQ = await gpt.createEmbedding(q);
+    const embeddingQ = await embeddings(q);
 
     const agg = [
       {

@@ -5,33 +5,6 @@ import gpt from "../gpt/gpt.js";
 
 const router = Router();
 
-const searchCongress = async (q, party, status) => {
-  const base = "https://www.congress.gov/search";
-  const queryParameters = {
-    source: "legislation",
-    search: "Abortion Bill",
-    type: "bills",
-    "bill-status": ["committee"],
-    party: "Democratic",
-  };
-  const url = new URL(base);
-  url.search = new URLSearchParams(queryParameters).toString();
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "user-agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
-
-  const data = await response.text();
-  console.log(data);
-};
-
 router.get("/search", async (req, res) => {
   try {
     // q: query, date: bills after x date, party: political party of sponsor, status: bill status
@@ -40,8 +13,7 @@ router.get("/search", async (req, res) => {
       return res.status(400).json({ err: "Query not provided." });
     }
 
-    // Make request to gov
-    // searchCongress(q, party, status);
+    // Make vector search
 
     return res.json({});
   } catch (err) {

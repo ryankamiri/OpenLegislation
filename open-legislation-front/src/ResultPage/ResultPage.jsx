@@ -76,6 +76,8 @@ function Results() {
     }
 }
 
+
+
 const billInfo = jasonData.bill
 const billAnalysor = jasonData.analysis
 

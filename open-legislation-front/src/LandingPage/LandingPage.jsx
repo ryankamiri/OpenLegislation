@@ -1,5 +1,4 @@
 import { FaBookOpen } from "react-icons/fa";
-import App from "../App";
 import MainPage from "../main-page/MainPage";
 import { useNavigate } from "react-router-dom";
 

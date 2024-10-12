@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as cheerio from 'cheerio';
 import Bill from "../models/bill.model.js";
-// import gpt from "../gpt/gpt.js";
+import { getAnalysis } from "../gpt/gpt.js";
 import embeddings from "@themaximalist/embeddings.js";
 
 const router = Router();
@@ -34,16 +34,16 @@ router.get("/search", async (req, res) => {
     const match = {};
 
     if (date_after) {
-      const parsedDateAfter = Date.parse(date_after);
+      const parsedDateAfter = Date.parse(date_after + 'T00:00:00.000Z');
       if (parsedDateAfter) {
-        match.updateDate = { ...match.updateDate, '$gte': parsedDateAfter };
+        match.updateDate = { ...match.updateDate, '$gte': new Date(parsedDateAfter) };
       }
     }
     
     if (date_before) {
-      const parsedDateBefore = Date.parse(date_before);
+      const parsedDateBefore = Date.parse(date_before + 'T00:00:00.000Z');
       if (parsedDateBefore) {
-        match.updateDate = { ...match.updateDate, '$lte': parsedDateBefore };
+        match.updateDate = { ...match.updateDate, '$lte': new Date(parsedDateBefore) };
       }
     }
     
@@ -76,16 +76,16 @@ router.get("/search", async (req, res) => {
 router.get("/bill/:id", async (req, res) => {
   try {
     // id: the id of the certain bill
-    const { id } = req.params.id;
+    const { id } = req.params;
     if (!id) {
       return res.status(400).json({ err: "Id is required to get bill info." });
     }
 
     // Get Bill Object
-    const bill = await Bill.find({billId: id});
+    let bill = await Bill.findOne({billId: id});
     if (!bill) {
       return res.status(400).json({ err: `Bill with id '${id}' does not exist.`});
-    }
+    }3
 
     const response = await fetch(`${bill.textUrl}?api_key=${process.env.GOV_API}`, {
       method: "GET"
@@ -100,7 +100,9 @@ router.get("/bill/:id", async (req, res) => {
     const text = $('pre').text();
 
     // Get GPT Analysis
-    const analysis = gpt.getAnalysis(text);
+    const analysis = await getAnalysis(text);
+
+    bill = bill.toObject();
 
     delete bill.title_vector;
 

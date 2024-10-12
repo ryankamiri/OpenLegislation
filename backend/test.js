@@ -8,23 +8,32 @@ dotenv.config();
 await mongoose.connect(process.env.MONGO_URI);
 console.log("Mongoose connected.");
 
-const bill = new Bill({
-    billId: 1,
-      title: "HealthCare and Finance Bill",
-      congressId: 1,
-      latestAction: {
-        actionDate: Date.now(),
-        text: "This bill has been overruled by Anish.",
+const createEmbedding = async (input) => {
+    const response = await fetch('https://api.openai.com/v1/embeddings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.GPT_API}`
       },
-      originChamber: "Senate",
-      updateDate: Date.now(),
-      latestStage: "Introduction",
-      sponsor: {},
-      cosponsors: [],
-      billUrl: "https://api.congress.gov/v3/bill/118/s/2228?format=json",
-      textUrl: "https://www.congress.gov/118/bills/s2228/BILLS-118s2228enr.htm"
-});
+      body: JSON.stringify({
+        model: 'text-embedding-ada-002',
+        input
+      })
+    });
+    const data = await response.json();
+    return data.data[0].embedding;
+  }
 
-bill.save();
+const agg = [
+    {
+      '$vectorSearch': {
+        'index': 'vector_index',
+        'path': 'title_vector',
+        'queryVector': await createEmbedding("Ocean"),
+        "numCandidates": 2,
+        "limit": 1
+      }
+    }];
 
-console.log("Created new bill!");
+const res = await Bill.aggregate(agg);
+console.log('Search result:', res);

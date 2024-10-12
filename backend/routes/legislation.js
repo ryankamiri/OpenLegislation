@@ -1,4 +1,5 @@
-const router = require("express").Router();
+import { Router } from "express";
+const router = Router();
 import gpt from "../gpt/gpt.js";
 
 const searchCongress = async (q, party, status) => {
@@ -68,4 +69,4 @@ router.get("/bill/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

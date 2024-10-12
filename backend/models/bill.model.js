@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // billId, title, congressId, latestAction, originChamber, updateDate, url
 
@@ -64,4 +64,4 @@ const billSchema = new Schema(
 
 const Bill = mongoose.model("Bill", billSchema);
 
-module.exports = Bill;
+export default Bill;

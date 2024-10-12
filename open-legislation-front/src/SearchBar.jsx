@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Button } from "flowbite-react";
+// import { Button } from "flowbite-react";
 
-let q = ''
+// let q = ''
+import { useNavigate } from "react-router-dom";
 
 function SearchBar({ onSearch }) {
     const [query, setQuery] = useState('');
+
+    const navigate = useNavigate();
 
     const handleQueryChange = (e) => {
         setQuery(e.target.value)
@@ -13,6 +16,7 @@ function SearchBar({ onSearch }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        navigate('/results')
         onSearch(query)
     }
 

@@ -9,15 +9,15 @@ const billSchema = new Schema(
     billId: {
       type: Number,
       required: true,
-      unique: true
+      unique: true,
     },
     title: {
       type: String,
       required: true,
     },
     title_vector: {
-        type: [Number],
-        required: true,
+      type: [Number],
+      required: true,
     },
     congressId: {
       type: Number,
@@ -42,25 +42,25 @@ const billSchema = new Schema(
       required: true,
     },
     latestStage: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     sponsor: {
-        type: Object,
-        required: true,
+      type: Object,
+      required: true,
     },
     cosponsors: {
-        type: Array,
-        required: true
+      type: Array,
+      required: true,
     },
     billUrl: {
       type: String,
       required: true,
     },
     textUrl: {
-        type: String,
-        required: true
-    }
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

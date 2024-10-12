@@ -5,6 +5,7 @@ dotenv.config();
 
 const openai = new OpenAI({
   apiKey: process.env.GPT_API,
+  baseURL: process.env.AI_API_URL,
 });
 
 const JSON_FORMAT =
@@ -39,21 +40,21 @@ export const getAnalysis = async (text) => {
   throw new Error("Refusal from ChatGPT (illegal response)");
 };
 
-export const createEmbedding = async (input) => {
-  const response = await fetch("https://api.openai.com/v1/embeddings", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.GPT_API}`,
-    },
-    body: JSON.stringify({
-      model: "text-embedding-ada-002",
-      input,
-    }),
-  });
-  const data = await response.json();
-  if(data.error) {
-    return(data);
-  }
-  return data.data[0].embedding;
-};
+// export const createEmbedding = async (input) => {
+//   const response = await fetch("https://api.openai.com/v1/embeddings", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${process.env.GPT_API}`,
+//     },
+//     body: JSON.stringify({
+//       model: "text-embedding-ada-002",
+//       input,
+//     }),
+//   });
+//   const data = await response.json();
+//   if(data.error) {
+//     return(data);
+//   }
+//   return data.data[0].embedding;
+// };

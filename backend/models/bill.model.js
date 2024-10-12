@@ -36,10 +36,26 @@ const billSchema = new Schema(
       type: Date,
       required: true,
     },
-    url: {
+    latestStage: {
+        type: String,
+        required: true
+    },
+    sponsor: {
+        type: Object,
+        required: true,
+    },
+    cosponsors: {
+        type: Array,
+        required: true
+    },
+    billUrl: {
       type: String,
       required: true,
     },
+    textUrl: {
+        type: String,
+        required: true
+    }
   },
   {
     timestamps: true,

@@ -1,8 +1,8 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 
@@ -17,6 +17,6 @@ mongoose.connect(process.env.MONGO_URI);
 console.log("MongoDB connection established");
 
 // Set up routes
-app.use('/api/legislation', require('./routes/legislation'));
+app.use("/api/legislation", require("./routes/legislation"));
 
 app.listen(PORT, () => console.log(`The server has started on port: ${PORT}`));

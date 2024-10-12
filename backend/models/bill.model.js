@@ -15,6 +15,10 @@ const billSchema = new Schema(
       type: String,
       required: true,
     },
+    title_vector: {
+        type: [Number],
+        required: true,
+    },
     congressId: {
       type: Number,
       required: true,

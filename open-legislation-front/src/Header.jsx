@@ -1,6 +1,5 @@
 import "./App.css";
-import logo from './oleg-logo.png';
-
+import logo from "./oleg-logo.png";
 
 function Header() {
   return (
@@ -9,11 +8,7 @@ function Header() {
         href="/"
         className="text-white hover:text-gray-300 transition-colors duration-200"
       >
-        <img
-          src={logo}
-          alt="OpenLegislation"
-          className="h-8 inline"
-        />
+        <img src={logo} alt="OpenLegislation" className="h-8 inline" />
         OpenLegislation
       </a>
     </header>

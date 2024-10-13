@@ -7,8 +7,7 @@ function Footer() {
       <div className="container mx-auto text-center">
         <p>&copy; 2024 OpenLegislation. All rights reserved.</p>
         <div className="flex justify-center space-x-4">
-          Created by Shishir Pokhrel, Anish Sahoo, Ryan
-          Amiri, Smyan Sengupta.
+          Created by Shishir Pokhrel, Anish Sahoo, Ryan Amiri, Smyan Sengupta.
         </div>
       </div>
     </footer>

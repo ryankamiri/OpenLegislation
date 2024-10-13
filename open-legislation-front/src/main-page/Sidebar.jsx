@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import NavButton from "./NavButton";
 import Calendar from "./Calendar";
-import '../index.css';
+import "../index.css";
 
 const SideBar = ({
   minDate,

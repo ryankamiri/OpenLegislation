@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Card from "./Card";
 
-function MainPage({setId}) {
+function MainPage({ setId }) {
   const [query, setQuery] = useState("");
   const [minDate, setMinDate] = useState(null);
   const [maxDate, setMaxDate] = useState(null);
@@ -65,19 +65,19 @@ function MainPage({setId}) {
           What kind of bill are you looking for?
         </h1>
         <div className="flex flex-row pr-8">
-        <input
+          <input
             className="border p-2 mr-2 rounded-lg w-3/4"
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter search query"
-        />
-        <button
-          onClick={handleSearch}
-          className="bg-blue-500 text-white p-2 rounded-lg"
-        >
-          Search
-        </button>
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Enter search query"
+          />
+          <button
+            onClick={handleSearch}
+            className="bg-blue-500 text-white p-2 rounded-lg"
+          >
+            Search
+          </button>
         </div>
 
         <h1 className="italic">{currentResults.length} results</h1>

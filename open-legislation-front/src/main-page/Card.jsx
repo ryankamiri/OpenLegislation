@@ -61,9 +61,8 @@ const Card = ({ bill }) => {
 
     return (
         <div className='bg-gray-400 p-2 space-y-2 mx-4 my-4 rounded-xl drop-shadow-xl'>
-            <h1 className='font-bold text-lg'>{bill.title}</h1>
+            <h1 className='font-bold text-lg'>Bill {bill.billId}: {bill.title}</h1>
             <p><b>Updated on:</b> {`${month} ${day}, ${year}`}</p>
-            <p><b>Bill ID:</b> {bill.billId}</p>
             <p><b>Introduced by:</b> {bill.originChamber}</p>
             <p><b>Sponsor:</b> {bill.sponsor.fullName}</p>
             <p><b>Party of sponsor:</b> {parties[bill.sponsor.party]}</p>

@@ -33,8 +33,8 @@ function MainPage() {
                 params: {
                     q: query,
                     party: party.value,
-                    date_after: await parseDate(minDate),
-                    date_before: await parseDate(maxDate),
+                    date_after: minDate ? await parseDate(minDate) : null,
+                    date_before: maxDate ? await parseDate(maxDate) : null,
                     stage: stage.value
                 }
             });

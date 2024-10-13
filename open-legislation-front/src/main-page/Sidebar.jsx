@@ -20,14 +20,14 @@ const SideBar = ({
   // };
 
   const parties = [
-    { value: null, label: "None " },
+    { value: null, label: "Any " },
     { value: "D", label: "Democratic" },
     { value: "R", label: "Republican" },
     { value: "I", label: "Independent" },
   ];
 
   const stages = [
-    { value: null, label: "None " },
+    { value: null, label: "Any " },
     { value: "Introduced", label: "Introduced" },
     { value: "House", label: "House" },
     { value: "Senate", label: "Senate" },

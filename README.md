@@ -1,5 +1,8 @@
 # HackHarvard24
 
+https://devpost.com/software/openlegislation
+https://openlegistation.asahoo.dev
+
 # Tracks
 Open-Source
 Llama Index

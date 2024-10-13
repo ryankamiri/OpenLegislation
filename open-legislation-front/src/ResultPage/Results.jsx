@@ -62,19 +62,24 @@ function Results() {
     return `${month} ${day}, ${year}`;
   };
 
+  const getStyle = (fullName) => {
+    return fullName.includes('[D-') ? "text-blue-500" : 
+    fullName.includes('[R-') ? "text-red-600" : "";
+  };
+
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg">
+    <div className="max-w-3xl mx-auto p-6 rounded-lg">
       {loading ? (
         <div className="h-screen flex justify-center items-center"><HashLoader color="#563478"/></div>
-      ) : (<div className="shadow-md p-6">
-      <h1 className="text-2xl font-bold mb-4  text-gray-400">Bill Information</h1>
+      ) : (<div className="shadow-lg p-6">
+      <h1 className="text-2xl font-bold mb-4 text-gray-400">Bill Information</h1>
 
       <div className="text-3xl font-semibold">
         {billId}: {completeBill.bill.title}
       </div>
       <div className="text-gray-700 mt-2">
         Sponsored by:{" "}
-        <span className="font-bold">{completeBill.bill.sponsor.fullName}</span>
+        <span className={`font-bold ${getStyle(completeBill.bill.sponsor.fullName)}`}>{completeBill.bill.sponsor.fullName}</span>
       </div>
 
       <div className="flex flex-row">

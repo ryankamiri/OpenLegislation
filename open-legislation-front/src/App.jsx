@@ -17,7 +17,7 @@ const App = () => {
           <Routes>
             <Route path="/" exact element={<LandingPage />} />
             <Route path="/home" exact element={<MainPage />} />
-            <Route path="/results" exact element={<Results />} />
+            <Route path="/results/:billId" exact element={<Results />} />
             <Route path="/piechart" exact element={<PieChart />} />
           </Routes>
           <Footer />

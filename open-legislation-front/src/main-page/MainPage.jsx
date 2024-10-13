@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Card from "./Card";
 
-function MainPage() {
+function MainPage({setId}) {
   const [query, setQuery] = useState("");
   const [minDate, setMinDate] = useState(null);
   const [maxDate, setMaxDate] = useState(null);
@@ -12,17 +12,6 @@ function MainPage() {
   const [stage, setStage] = useState("");
 
   const [currentResults, setCurrentResults] = useState([]);
-
-  // const location = useLocation();
-  // useEffect(async() => {
-  //     const searchParams = new URLSearchParams(location.search);
-  //     const urlQuery = searchParams.get('query');
-  //     if (urlQuery) {
-  //         setQuery(urlQuery);
-  //         searchQuery(urlQuery);
-  //     }
-  // }, [location]);
-
   const parseDate = async (date) => {
     return (
       date.getFullYear() +
@@ -92,23 +81,9 @@ function MainPage() {
         <h1 className="italic">{currentResults.length} results</h1>
 
         {currentResults.map((bill) => (
-          <Card bill={bill} key={bill.billId} />
+          <Card bill={bill} key={bill.billId} idSet={setId} />
         ))}
       </form>
-      {/* <div>
-                <Card bill={{
-                    'billId': 1,
-                    'title': 'Test Bill',
-                    'congressId': 117,
-                    'updateDate': '2021-10-01',
-                    'originChamber': 'House',
-                    'sponsor': {
-                        'party': 'Republican',
-                        'fullName': 'John Doe'
-                    },
-                    'latestStage': 'Passed One Chamber'
-                }}/>
-            </div> */}
     </div>
   );
 }

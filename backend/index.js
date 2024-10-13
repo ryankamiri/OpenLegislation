@@ -22,6 +22,10 @@ mongoose
 // Set up routes
 app.use("/api/legislation", legislationRoutes);
 
+app.get("/", async (req, res) => {
+  res.redirect("/api/legislation/");
+});
+
 app.listen(PORT, () =>
   console.log(`The server is on: https://localhost:${PORT}`),
 );

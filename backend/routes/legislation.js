@@ -10,6 +10,10 @@ const router = Router();
 const NUM_CANDIDATES = 10;
 const LIMIT = 10;
 
+router.get("/", async (req, res) => {
+  return res.send("OpenLegislature API");
+});
+
 router.get("/search", async (req, res) => {
   try {
     // q: query, date: bills after x date, party: political party of sponsor, stage: bill status
@@ -36,7 +40,7 @@ router.get("/search", async (req, res) => {
     const match = {};
 
     if (date_after) {
-      const parsedDateAfter = Date.parse(date_after + "T00:00:00.000Z");
+      const parsedDateAfter = Date.parse(date_after);
       if (parsedDateAfter) {
         match.updateDate = {
           ...match.updateDate,
@@ -46,7 +50,7 @@ router.get("/search", async (req, res) => {
     }
 
     if (date_before) {
-      const parsedDateBefore = Date.parse(date_before + "T00:00:00.000Z");
+      const parsedDateBefore = Date.parse(date_before);
       if (parsedDateBefore) {
         match.updateDate = {
           ...match.updateDate,

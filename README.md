@@ -27,7 +27,7 @@ We are proud that we have used open source software technology and data to empow
 
 ## What we learned
 
-During the development of this project, we learned more of how vector embeddings work and are used to provide the best search results. We learned more of Cloudfare and OpenAI's tools in this development and will defenitely be using them on future projects. Most importantly, we learned the value of open source data and technology and the impact it can have on our society.
+During the development of this project, we learned more of how vector embeddings work and are used to provide the best search results. We learned more of Cloudfare and OpenAI's tools in this development and will definitely be using them on future projects. Most importantly, we learned the value of open source data and technology and the impact it can have on our society.
 
 ## What's next for OpenLegislation
 

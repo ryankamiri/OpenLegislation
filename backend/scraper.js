@@ -93,7 +93,7 @@ const scrapeGov = async () => {
           billUrl: bill.url,
           textUrl: fullTextURL,
         });
-        // await billObj.save();
+        await billObj.save();
         console.log(
           count++,
           i,

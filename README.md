@@ -1,6 +1,6 @@
 # HackHarvard24
 
-https://devpost.com/software/openlegislation
+https://devpost.com/software/openlegislation \
 https://openlegistation.asahoo.dev
 
 # Tracks

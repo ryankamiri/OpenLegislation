@@ -146,66 +146,78 @@ const bills = [
 
 function MainPage() {
     const [query, setQuery] = useState('');
+    const [minDate, setMinDate] = useState('');
+    const [maxDate, setMaxDate] = useState('');
+    const [party, setParty] = useState('');
+    const [stage, setStage] = useState('');
+
     const [currentResults, setCurrentResults] = useState([]);
-    const location = useLocation();
-    const [finalQuery, setFinalQuery] = useState('');
 
-    useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const urlQuery = searchParams.get('query');
-        if (urlQuery) {
-            setQuery(urlQuery);
-            searchQuery(urlQuery);
-        }
-    }, [location]);
+    // const location = useLocation();
+    // useEffect(async() => {
+    //     const searchParams = new URLSearchParams(location.search);
+    //     const urlQuery = searchParams.get('query');
+    //     if (urlQuery) {
+    //         setQuery(urlQuery);
+    //         searchQuery(urlQuery);
+    //     }
+    // }, [location]);
 
-    const searchQuery = async (term) => {
+    const handleSearch = async() => {
         try {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+            const response = await axios.get('https://legapi.asahoo.dev/api/legislation/search', {
                 params: {
-                    title_like: term
+                    q: query,
+                    party,
+                    date_after: minDate,
+                    date_before: maxDate,
+                    stage
                 }
             });
             setCurrentResults(response.data);
         } catch (error) {
-            console.error(`Error searching for ${`\"${term}\"`}: ${error}`);
+            console.error(`Error searching for ${`\"${query}\"`}: ${error}`);
         }
-    }
-
-    const handleSearch = () => {
-        searchQuery(query);
-        setFinalQuery(query);
-    }
+    };
 
     return (
-        <div className='flex min-h-screen bg-gray-100 grid-flow-row'>
-            <Sidebar />
-            <div className='grid-flow-col'>
-                <div className='flex-1 p-10 space-y-4'>
-                    <h1 className='text-xl font-bold italic'>What kind of bill are you looking for?</h1>
-                    <input
-                        type="text" 
-                        value={query} 
-                        onChange={(e) => setQuery(e.target.value)} 
-                        placeholder="Enter search query"
-                        className="border p-2 mr-2 rounded w-96"
-                    />
-                    <button onClick={handleSearch} className="bg-blue-500 text-white p-2 rounded">Search</button>
+        <div className='flex min-h-screen bg-gray-100'>
+            <Sidebar minDate={minDate} setMinDate={setMinDate} maxDate={maxDate} setMaxDate={setMaxDate} party={party} setParty={setParty} stage={stage} setStage={setStage}/>
+            <form className='flex-1 p-10 space-y-4' onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
+            }}>
+                <h1 className='text-xl font-bold italic'>What kind of bill are you looking for?</h1>
+                <input
+                    type="text" 
+                    value={query} 
+                    onChange={(e) => setQuery(e.target.value)} 
+                    placeholder="Enter search query"
+                    className="border p-2 mr-2 rounded w-96"
+                />
+                <button onClick={handleSearch} className="bg-blue-500 text-white p-2 rounded">Search</button>
 
-                        <h1 className='italic'>{currentResults.length} results</h1>
-                        <ul>
-                            {/* TODO: make this return the actual cards when it fetches from the backend */}
-                            {currentResults.map((res) => (
-                                <li key={res.id}>{res.title}</li>
-                            ))}
-                        </ul>
-                </div>
-                <div>
-                    {bills.map((bill) => (
-                        <Card key={bill._id} bill={bill} />
-                    ))}
-                </div>
-            </div>
+                    <h1 className='italic'>{currentResults.length} results</h1>
+                    <ul>
+                        {currentResults.map((res) => (
+                            <li key={res.id}>{res.title}</li>
+                        ))}
+                    </ul>
+            </form>
+            {/* <div>
+                <Card bill={{
+                    'billId': 1,
+                    'title': 'Test Bill',
+                    'congressId': 117,
+                    'updateDate': '2021-10-01',
+                    'originChamber': 'House',
+                    'sponsor': {
+                        'party': 'Republican',
+                        'fullName': 'John Doe'
+                    },
+                    'latestStage': 'Passed One Chamber'
+                }}/>
+            </div> */}
         </div>
     );
 }

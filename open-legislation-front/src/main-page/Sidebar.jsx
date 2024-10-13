@@ -4,11 +4,7 @@ import NavButton from './NavButton';
 import Calendar from './Calendar';
 import { DatePicker } from '@mui/x-date-pickers';
 
-function Sidebar() {
-    const [minDate, setMinDate] = useState('');
-    const [maxDate, setMaxDate] = useState('');
-    const [party, setParty] = useState('');
-    const [status, setStatus] = useState('');
+function Sidebar({minDate, setMinDate, maxDate, setMaxDate, party, setParty, stage, setStage}) {
 
     const handleDropdownChange = (setter) => (event) => {
         const value = event.value || (event.target && event.target.value);
@@ -16,16 +12,16 @@ function Sidebar() {
     };
 
     const parties = [
-        { value: 'democratic', label: 'Democratic' },
-        { value: 'republican', label: 'Republican' },
-        { value: 'independent', label: 'Independent' }
+        { value: 'D', label: 'Democratic' },
+        { value: 'R', label: 'Republican' },
+        { value: 'I', label: 'Independent' }
     ];
 
-    const statuses = [
-        {value: 'introduced', label: 'Introduced'},
-        {value: 'senate', label: 'Senate'},
-        {value: 'house', label: 'House'},
-        {value: 'president', label: 'President'},
+    const stages = [
+        {value: 'Introduced', label: 'Introduced'},
+        {value: 'House', label: 'House'},
+        {value: 'Senate', label: 'Senate'},
+        {value: 'President', label: 'President'}
     ]
 
     return (
@@ -39,8 +35,8 @@ function Sidebar() {
             <h2 className="text-white text-lg font-semibold">Party</h2>
             <Dropdown items={parties} onChange={handleDropdownChange(setParty)} />
 
-            <h2 className="text-white text-lg font-semibold">Status</h2>
-            <Dropdown items={statuses} onChange={handleDropdownChange(setStatus)} />
+            <h2 className="text-white">Stage</h2>
+            <Dropdown items={stages} onChange={handleDropdownChange(setStage)} />
 
             {/* <NavButton destination='/results' text='Apply'></NavButton> */}
         </div>

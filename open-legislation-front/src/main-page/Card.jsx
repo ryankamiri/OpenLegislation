@@ -37,26 +37,39 @@ const Card = ({ bill }) => {
   };
 
   return (
-    <div className="bg-gray-400 p-2 space-y-2 mx-4 my-4 rounded-xl drop-shadow-xl"
+    <div className="bg-gray-200 hover:shadow-lg p-4 space-y-2 mx-4 my-4 rounded-xl drop-shadow-xl"
     onClick={() => handleClick()}>
-      <h1 className="font-bold text-lg">
-        Bill {bill.billId}: {bill.title}
+      <div className="flex flex-row">
+      <h1 className="font-bold text-lg w-full hover:underline">
+        Bill {bill.billId}: {bill.title} 
       </h1>
-      <p>
+      <p className="text-right w-full">
         <b>Updated on:</b> {`${month} ${day}, ${year}`}
       </p>
+      
+      </div>
+      
       <p>
         <b>Introduced by:</b> {bill.originChamber}
       </p>
-      <p>
-        <b>Sponsor:</b> {bill.sponsor.fullName}
+      <div className="flex flex-row">
+      <p className={`w-full `}>
+        <b>Sponsor:</b>
+        <span 
+        className={`pl-2 
+        ${bill.sponsor.fullName.includes('[D-') ? "text-blue-500" : ""}
+        ${bill.sponsor.fullName.includes('[R-') ? "text-red-600" : ""}
+        `}>
+        {bill.sponsor.fullName}</span> 
       </p>
-      <p>
+      <span className="bg-green-300 rounded-lg p-2 my-auto whitespace-nowrap">Currently at: {bill.latestStage}</span>
+      </div>
+      {/* <p>
         <b>Party of sponsor:</b> {parties[bill.sponsor.party]}
-      </p>
-      <p>
+      </p> */}
+      {/* <p>
         <b>Current status in Congress:</b> {bill.latestStage}
-      </p>
+      </p> */}
     </div>
   );
 };

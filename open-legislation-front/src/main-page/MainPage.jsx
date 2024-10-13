@@ -64,6 +64,7 @@ function MainPage({setId}) {
         <h1 className="text-xl font-bold italic">
           What kind of bill are you looking for?
         </h1>
+        <div className="flex flex-row pr-8">
         <input
             className="border p-2 mr-2 rounded-lg w-3/4"
           type="text"
@@ -77,6 +78,7 @@ function MainPage({setId}) {
         >
           Search
         </button>
+        </div>
 
         <h1 className="italic">{currentResults.length} results</h1>
 

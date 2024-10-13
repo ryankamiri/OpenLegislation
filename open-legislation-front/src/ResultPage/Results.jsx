@@ -5,8 +5,6 @@ import axios from "axios";
 
 function Results() {
   const [completeBill, setCompleteBill] = useState({});
-  const [totalRepublicanCosponsors, setTotalRepublicanCosponsors] = useState(0);
-  const [percentage, setPercentage] = useState(0);
   const [loading, setLoading] = useState(true);
   
   const { billId } = useParams();
@@ -17,47 +15,33 @@ function Results() {
       const response = await axios.get(
         "https://legapi.asahoo.dev/api/legislation/bill/" + id
       );
-      setCompleteBill(response.data);
+      const data = response.data;
       console.log("getSummaryData response", response.data);
-      return response.data;
+      setCompleteBill(data);
+      console.log("getSummaryData completeBill", data);
+      return data;
     } catch (error) {
       console.error(error);
     }
   };
-  
-  let tally = [];
-  function counter() {
-    console.log(completeBill);
-    if (completeBill.bill.sponsor.party === "R") {
-      tally.push(completeBill.bill.sponsor.party);
-    }
-    for (let i = 0; i < completeBill.bill.cosponsors.length; i++) {
-      if (completeBill.bill.cosponsors[i].party === "R") {
-        tally.push(completeBill.bill.cosponsors[i].party);
-      }
-    }
-    return completeBill.bill.cosponsors.length + 1;
-  }
-
-  function partyPercentage(total) {
-    return (tally.length / total) * 100;
-  }
 
   useEffect(() => {
     console.log("useEffect", billId);
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-    
+    setLoading(true);
     const fetchData = async () => {
-      await getSummaryData(billId);
-      await wait(10000);
-      console.log("useEffect timeout", billId);
+      const data = await getSummaryData(billId);
+      setLoading(false);
     };  
     fetchData();
   }, [billId]);
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      {/* <h1 className="text-2xl font-bold mb-4 text-gray-400">Bill Information</h1>
+      {loading ? (
+        <div className="text-2xl font-bold mb-4 text-gray-400">Loading...</div>
+      ) : (<>
+      <h1 className="text-2xl font-bold mb-4 text-gray-400">Bill Information</h1>
 
       <div className="text-3xl font-semibold">
         {billId}: {completeBill.bill.title}
@@ -79,7 +63,7 @@ function Results() {
           </ul>
         </div>
         <div className="">
-          <PieChartComponent percentage={percentage} />
+          <PieChartComponent bill={completeBill.bill} />
         </div>
       </div>
       <div className="mt-4">
@@ -112,7 +96,7 @@ function Results() {
       <div className="mt-4">
         <h2 className="text-lg font-bold">Cons</h2>
         <p className="text-gray-700">{completeBill.analysis.cons}</p>
-      </div> */}
+      </div></>)}
     </div>
 );
 }

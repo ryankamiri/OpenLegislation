@@ -101,7 +101,12 @@ const scrapeGov = async () => {
           bill.title.substring(0, 50),
         );
       } catch (err) {
-        console.error(count++, i, "Error adding bill to database:", err.message ? err.message : err);
+        console.error(
+          count++,
+          i,
+          "Error adding bill to database:",
+          err.message ? err.message : err,
+        );
       }
     }
   }

@@ -109,11 +109,9 @@ router.get("/bill/:id", async (req, res) => {
     );
 
     if (!response.ok) {
-      return res
-        .status(500)
-        .json({
-          err: `Gov API returned an ${response.status} error: ${await response.text()}`,
-        });
+      return res.status(500).json({
+        err: `Gov API returned an ${response.status} error: ${await response.text()}`,
+      });
     }
 
     // Get text of bill from gov

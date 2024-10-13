@@ -146,8 +146,8 @@ const bills = [
 
 function MainPage() {
     const [query, setQuery] = useState('');
-    const [minDate, setMinDate] = useState('');
-    const [maxDate, setMaxDate] = useState('');
+    const [minDate, setMinDate] = useState(null);
+    const [maxDate, setMaxDate] = useState(null);
     const [party, setParty] = useState('');
     const [stage, setStage] = useState('');
 

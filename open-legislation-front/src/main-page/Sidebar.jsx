@@ -49,7 +49,7 @@ const SideBar = ({
         options={parties}
       />
 
-      <h2 className="text-white">Stage</h2>
+      <h2 className="text-white text-lg font-semibold">Stage</h2>
       <Select
         value={stage}
         onChange={(item) => setStage(item)}

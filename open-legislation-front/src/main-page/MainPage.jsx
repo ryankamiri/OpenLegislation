@@ -65,7 +65,7 @@ function MainPage({setId}) {
           What kind of bill are you looking for?
         </h1>
         <input
-            className="border p-2 mr-2 rounded w-3/4"
+            className="border p-2 mr-2 rounded-lg w-3/4"
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -73,7 +73,7 @@ function MainPage({setId}) {
         />
         <button
           onClick={handleSearch}
-          className="bg-blue-500 text-white p-2 rounded"
+          className="bg-blue-500 text-white p-2 rounded-lg"
         >
           Search
         </button>

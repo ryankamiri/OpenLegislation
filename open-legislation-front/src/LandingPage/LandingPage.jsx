@@ -44,15 +44,9 @@ export default function LandingPage() {
       <div>
         <button
           onClick={() => navigate("/home")}
-          className="bg-red-500 text-white py-2 px-4  hover:bg-red-400 transition duration-300 rounded-tl-lg rounded-bl-lg"
+          className="bg-gradient-to-r from-blue-500 to-red-500 text-white py-2 px-4 hover:bg-gradient-to-r from-blue-400 to-red-400 transition duration-300 rounded-lg"
         >
-          &nbsp;&nbsp; Get &nbsp;
-        </button>
-        <button
-          onClick={() => navigate("/home")}
-          className="bg-blue-500 text-white py-2 px-4  hover:bg-blue-400 transition duration-300 rounded-tr-lg rounded-br-lg"
-        >
-          Started!
+          &nbsp; Get Started! &nbsp;
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React from "react";
 import Select from "react-select";
 import NavButton from "./NavButton";
 import Calendar from "./Calendar";
+import '../index.css';
 
 const SideBar = ({
   minDate,
@@ -34,7 +35,7 @@ const SideBar = ({
   ];
 
   return (
-    <div className=" min-w-max bg-gray-700 p-4 space-y-2 text-center">
+    <div className=" min-w-max bg-gray-700 p-4 space-y-2 text-center sidebar">
       <h2 className="text-white text-lg font-semibold">Earliest Date</h2>
       <Calendar selectedDate={minDate} setSelectedDate={setMinDate} />
 

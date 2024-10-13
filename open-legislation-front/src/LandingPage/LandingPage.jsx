@@ -5,6 +5,9 @@ export default function LandingPage() {
   const navigate = useNavigate();
 
   return (
+    // <div className="relative h-screen w-full">
+
+
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-6">
       <div className="flex items-center text-4xl font-bold text-gray-800 mb-36">
         <FaBookOpen className="mr-2 text-red-500" />
@@ -45,5 +48,6 @@ export default function LandingPage() {
         </button>
       </div>
     </div>
+    // </div>
   );
 }

@@ -4,6 +4,21 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { HashLoader } from "react-spinners";
 
+const months = {
+  "01": "January",
+  "02": "February",
+  "03": "March",
+  "04": "April",
+  "05": "May",
+  "06": "June",
+  "07": "July",
+  "08": "August",
+  "09": "September",
+  "10": "October",
+  "11": "November",
+  "12": "December",
+};
+
 function Results() {
   const [completeBill, setCompleteBill] = useState({});
   const [loading, setLoading] = useState(true);
@@ -36,6 +51,16 @@ function Results() {
     };  
     fetchData();
   }, [billId]);
+
+  const getDate = (bill) => {
+    const month = months[bill.updateDate.substring(5, 7)];
+    const day =
+      parseInt(bill.updateDate.substring(8, 10)) >= 10
+        ? bill.updateDate.substring(8, 10)
+        : bill.updateDate.substring(9, 10);
+    const year = bill.updateDate.substring(0, 4);
+    return `${month} ${day}, ${year}`;
+  };
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg">
@@ -70,8 +95,7 @@ function Results() {
       <div className="mt-4">
         <span className="font-semibold">Status:</span> The bill is currently
         waiting for approval from the{" "}
-        <span className="font-medium">{completeBill.bill.latestStage}</span>, since{" "}
-        {completeBill.bill.updateDate}
+        <span className="font-medium">{completeBill.bill.latestStage}</span>, since{" "} {getDate(completeBill.bill)}.
       </div>
 
       <div className="mt-6">

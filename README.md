@@ -5,8 +5,8 @@ https://openlegistation.asahoo.dev
 
 # Tracks
 Open-Source
-Llama Index
-Cloudflare Ai Gateway
+LlamaIndex (Databricks)
+Cloudflare AI Gateway
 
 ## Inspiration
 
@@ -18,7 +18,7 @@ OpenLegislation aims to bridge the knowledge gap by providing easy access to leg
 
 ## How we built it
 
-We built this application with a tech stack of MongoDB, ExpressJS, ReactJS, and OpenAI. DataBricks' Llama Index was used to get embeddings for the title of our bill. We used a Vector Search using Atlas's Vector Search and Mongoose for accurate semantic results when searching for a bill. Additionally, Cloudfare's AI Gateway was used to track calls to GPT-4o for insightful analysis of each bill.
+We built this application with a tech stack of MongoDB, ExpressJS, ReactJS, and OpenAI. DataBricks' LlamaIndex with a HuggingFace model was used to generate embeddings for the titles of our bills. We used a Vector Search using Atlas's Vector Search and Mongoose for accurate semantic results when searching for a bill. Additionally, Cloudfare's AI Gateway was used to track calls to GPT-4o for insightful analysis of each bill.
 
 ## Challenges we ran into
 

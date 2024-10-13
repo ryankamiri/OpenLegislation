@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PieChartComponent from "./PieChart";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { HashLoader } from "react-spinners";
 
 function Results() {
   const [completeBill, setCompleteBill] = useState({});
@@ -37,11 +38,11 @@ function Results() {
   }, [billId]);
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg">
       {loading ? (
-        <div className="text-2xl font-bold mb-4 text-gray-400">Loading...</div>
-      ) : (<>
-      <h1 className="text-2xl font-bold mb-4 text-gray-400">Bill Information</h1>
+        <div className="h-screen flex justify-center items-center"><HashLoader color="#563478"/></div>
+      ) : (<div className="shadow-md p-6">
+      <h1 className="text-2xl font-bold mb-4  text-gray-400">Bill Information</h1>
 
       <div className="text-3xl font-semibold">
         {billId}: {completeBill.bill.title}
@@ -96,7 +97,7 @@ function Results() {
       <div className="mt-4">
         <h2 className="text-lg font-bold">Cons</h2>
         <p className="text-gray-700">{completeBill.analysis.cons}</p>
-      </div></>)}
+      </div></div>)}
     </div>
 );
 }

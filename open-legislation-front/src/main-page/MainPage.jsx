@@ -198,11 +198,11 @@ function MainPage() {
                 <button onClick={handleSearch} className="bg-blue-500 text-white p-2 rounded">Search</button>
 
                     <h1 className='italic'>{currentResults.length} results</h1>
-                    <ul>
-                        {currentResults.map((res) => (
-                            <li key={res.id}>{res.title}</li>
-                        ))}
-                    </ul>
+
+                    {currentResults.map((bill) => (
+                        <Card bill={bill} key={bill.billId}/>
+                    ))}
+
             </form>
             {/* <div>
                 <Card bill={{

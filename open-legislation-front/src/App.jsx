@@ -9,7 +9,7 @@ import PieChart from './ResultPage/PieChart'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
-function App() {
+const App = () => {
 
   return (
     <div>

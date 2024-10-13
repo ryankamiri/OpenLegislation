@@ -144,6 +144,9 @@ function Results() {
             <h2 className="text-lg font-bold">Cons</h2>
             <p className="text-gray-700">{completeBill.analysis.cons}</p>
           </div>
+          <div>
+            <a className="text-lg font-bold" href={completeBill.bill.textUrl ? completeBill.bill.textUrl : ""}>View the actual bill</a>
+            </div>
         </div>
       )}
     </div>

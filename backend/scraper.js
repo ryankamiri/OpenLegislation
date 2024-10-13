@@ -20,7 +20,7 @@ const link2 = `&limit=20&format=json&api_key=${GOV_API}`;
 
 const scrapeGov = async () => {
   let count = 0;
-  for (let i = 0; i < 8; i++) {
+  for (let i = 134; i < 180; i++) {
     const response = await fetch(`${link1}${i * 20}${link2}`);
     const data = await response.json();
     if (data.error) {

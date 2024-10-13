@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Card({ bill={} }) {
     const [billId, setBillId] = useState('');
@@ -10,25 +10,27 @@ function Card({ bill={} }) {
     const [sponsor, setSponsor] = useState('');
     const [status, setStatus] = useState('');
 
-    setBillId(bill['billId']);
-    setTitle(bill['title']);
-    setCongressId(bill['congressId']);
-    setDate(bill['updateDate']);
-    setChamber(bill['originChamber']);
-    setParty(bill['sponsor']['party']);
-    setSponsor(bill['sponsor']['fullName']);
-    setStatus(bill['latestStage']);
+    useEffect(() => {
+        setBillId(bill['billId']);
+        setTitle(bill['title']);
+        setCongressId(bill['congressId']);
+        setDate(bill['updateDate']);
+        setChamber(bill['originChamber']);
+        setParty(bill['sponsor']['party']);
+        setSponsor(bill['sponsor']['fullName']);
+        setStatus(bill['latestStage']);
+    })
 
     return (
-        <div>
-            <h1>{title}</h1>
-            <p>Updated on: {date}</p>
-            <p>Bill ID: {billId}</p>
-            <p>Congress: {congressId}</p>
-            <p>Introduced by: {chamber}</p>
-            <p>Sponsor: {sponsor}</p>
-            <p>Party of sponsor: {party}</p>
-            <p>Current status in Congress: {status}</p>
+        <div className='bg-gray-400 p-2 space-y-2 mx-4 my-4 rounded-xl drop-shadow-xl'>
+            <h1 className='font-bold text-lg'>{title}</h1>
+            <p><b>Updated on:</b> {date.substring(0,10)}</p>
+            <p><b>Bill ID:</b> {billId}</p>
+            <p><b>Congress:</b> {congressId}</p>
+            <p><b>Introduced by:</b> {chamber}</p>
+            <p><b>Sponsor:</b> {sponsor}</p>
+            <p><b>Party of sponsor:</b> {party}</p>
+            <p><b>Current status in Congress:</b> {status}</p>
         </div>
     )
 }

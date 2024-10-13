@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LocaliazationProvider, DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import TextField from '@mui/material/TextField';
 
@@ -9,6 +9,7 @@ function Calendar() {
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
+                className='bg-white rounded'
                 value={selectedDate}
                 onChange={handleDateChange}
                 renderInput={(params) => <TextField {...params} />}

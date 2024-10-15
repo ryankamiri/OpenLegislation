@@ -4,7 +4,7 @@ https://devpost.com/software/openlegislation \
 https://openlegistation.asahoo.dev
 
 # Tracks
-Open-Source (1st Place!) 
+Open-Source Data (1st Place!) 
 
 ## MLH Tracks
 LlamaIndex (Databricks) \

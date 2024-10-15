@@ -1,12 +1,14 @@
-# HackHarvard24
+# HackHarvard24 Open Data WINNER!
 
 https://devpost.com/software/openlegislation \
 https://openlegistation.asahoo.dev
 
 # Tracks
-Open-Source
-LlamaIndex (Databricks)
-Cloudflare AI Gateway
+Open-Source (1st Place!) 
+
+## MLH Tracks
+LlamaIndex (Databricks) \
+Cloudflare AI Gateway 
 
 ## Inspiration
 

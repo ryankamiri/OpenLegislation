@@ -1,7 +1,7 @@
 # HackHarvard24 Open Data WINNER!
 
 https://devpost.com/software/openlegislation \
-https://openlegistation.asahoo.dev
+https://openlegislation.asahoo.dev
 
 # Tracks
 Open-Source Data (1st Place!) 
